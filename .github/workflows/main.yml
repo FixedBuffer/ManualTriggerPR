@@ -1,0 +1,37 @@
+name: Manual run e2e test
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: khan/pull-request-comment-trigger@master
+        id: check-comment
+        with:
+          trigger: 'e2e'
+          reaction: rocket
+          prefix_only: true
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Check user permission
+        id: check-permission
+        uses: scherermichael-oss/action-has-permission@master
+        with:
+          required-permission: write
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run only if user has sufficient permissions
+        if: steps.check-comment.outputs.triggered == 'true' && steps.check-permission.outputs.has-permission        
+        run: git status
+        
+      - name: Run only if user has NOT sufficient permissions
+        if: "! steps.check-permission.outputs.has-permission"
+        run: echo "Sorry!"
