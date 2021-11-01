@@ -50,11 +50,11 @@ jobs:
           PR_NUM=${PR_URL##*/}
           echo "Checking out from PR #$PR_NUM based on URL: $PR_URL"
           hub pr checkout $PR_NUM
-          echo '::set-output name=PR_NUM::${PR_NUM}'
+          echo "::set-output name=pr_num::$PR_NUM"
 
       - name: Run only if user has sufficient permissions
         if: steps.check-comment.outputs.triggered == 'true' && steps.check-permission.outputs.has-permission        
-        run: echo "${{ steps.checkout.outputs.PR_NUM }}"
+        run: echo "${{ steps.checkout.outputs.pr_num }}"
         
       - name: Run only if user has NOT sufficient permissions
         if: "! steps.check-permission.outputs.has-permission"
