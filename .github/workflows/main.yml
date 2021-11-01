@@ -60,7 +60,7 @@ jobs:
         uses: dkershner6/reaction-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commentId: ${{ context.payload.comment.id }}
+          commentId: ${{ github.event.comment.id }}
           reaction: "hooray" # Optional, defaults to +1
 
 
