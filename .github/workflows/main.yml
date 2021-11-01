@@ -30,6 +30,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Checkout Pull Request
+        if: steps.check-comment.outputs.triggered == 'true' && steps.check-permission.outputs.has-permission
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_URL="${{ github.event.issue.pull_request.url }}"
+          PR_NUM=${PR_URL##*/}
+          echo "Checking out from PR #$PR_NUM based on URL: $PR_URL"
+          hub pr checkout $PR_NUM
+
       - name: Run only if user has sufficient permissions
         if: steps.check-comment.outputs.triggered == 'true' && steps.check-permission.outputs.has-permission        
         run: git status
