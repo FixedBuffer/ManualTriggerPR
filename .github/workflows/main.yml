@@ -56,6 +56,11 @@ jobs:
         if: steps.check-comment.outputs.triggered == 'true' && steps.check-permission.outputs.has-permission        
         run: echo "${{ steps.checkout.outputs.pr_num }}"
         
-      - name: Run only if user has NOT sufficient permissions
-        if: "! steps.check-permission.outputs.has-permission"
-        run: echo "Sorry!"
+      - name: React to comment
+        uses: dkershner6/reaction-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commentId: ${{ context.payload.comment.id }}
+          reaction: "hooray" # Optional, defaults to +1
+
+
