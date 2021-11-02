@@ -52,6 +52,7 @@ jobs:
           then
             export e2eTestRegex="${BASH_REMATCH[1]}"
             echo "${BASH_REMATCH[1]}"
+            echo "${e2eTestRegex}"
           fi
           echo "${{ steps.checkout.outputs.pr_num }}"
         
