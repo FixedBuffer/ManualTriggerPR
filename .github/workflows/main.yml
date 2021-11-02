@@ -47,9 +47,10 @@ jobs:
         if: steps.check-comment.outputs.triggered == 'true' && steps.check-permission.outputs.has-permission        
         run: |
           MESSAGE="${{ github.event.comment.body }}"
-          REGEX=${MESSAGE#"/e2e "}
-          export e2eTestRegex=$REGEX
-          echo $e2eTestRegex
+          REGEX='/e2e (.+)'
+          [[ "$MESSAGE" =~ $REGEX ]]
+          export e2eTestRegex="${BASH_REMATCH[1]}"
+          echo "${BASH_REMATCH[1]}"
           echo "${{ steps.checkout.outputs.pr_num }}"
         
       - name: React to comment
