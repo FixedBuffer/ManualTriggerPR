@@ -24,7 +24,7 @@ jobs:
 
       - name: Check user permission
         id: check-permission
-        if: steps.check-comment.outputs.triggered
+        if: steps.check-comment.outputs.triggered == 'true'
         uses: scherermichael-oss/action-has-permission@master
         with:
           required-permission: write
