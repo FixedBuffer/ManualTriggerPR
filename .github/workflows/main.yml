@@ -34,16 +34,6 @@ jobs:
         if: steps.check-comment.outputs.triggered == 'true' && steps.check-permission.outputs.has-permission
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_URL="${{ github.event.issue.pull_request.url }}"
-          PR_NUM=${PR_URL##*/}
-          echo "Checking out from PR #$PR_NUM based on URL: $PR_URL"
-          hub pr checkout $PR_NUM
-
-      - name: Checkout Pull Request
-        if: steps.check-comment.outputs.triggered == 'true' && steps.check-permission.outputs.has-permission
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: checkout
         run: |
           PR_URL="${{ github.event.issue.pull_request.url }}"
