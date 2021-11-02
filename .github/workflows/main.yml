@@ -16,7 +16,7 @@ jobs:
       - uses: khan/pull-request-comment-trigger@master
         id: check-comment
         with:
-          trigger: 'e2e'
+          trigger: '/e2e'
           reaction: rocket
           prefix_only: true
         env:
@@ -54,7 +54,12 @@ jobs:
 
       - name: Run only if user has sufficient permissions
         if: steps.check-comment.outputs.triggered == 'true' && steps.check-permission.outputs.has-permission        
-        run: echo "${{ steps.checkout.outputs.pr_num }}"
+        run: |
+          MESSAGE="${{ github.event.comment.body }}"
+          REGEX=${MESSAGE#"/e2e "}
+          export e2eTestRegex=$REGEX
+          echo $e2eTestRegex
+          echo "${{ steps.checkout.outputs.pr_num }}"
         
       - name: React to comment
         uses: dkershner6/reaction-action@v1
